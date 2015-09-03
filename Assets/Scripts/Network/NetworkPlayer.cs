@@ -17,7 +17,8 @@ public class NetworkPlayer : Photon.MonoBehaviour {
         }
         else
         {
-
+            GetComponent<CarController>().enabled = false;
+            Debug.Log("NetworkPlayer car controller disabled");
         }
 	}
 	

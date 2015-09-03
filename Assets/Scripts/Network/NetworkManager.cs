@@ -15,9 +15,11 @@ public class NetworkManager : MonoBehaviour {
     private int i = 0;
     int group = 0;
     byte maxPlayer = 4;
+    GameObject player;
     void Start()
     {
-        PhotonNetwork.ConnectUsingSettings(VERSION);
+        if(!PhotonNetwork.connected)
+            PhotonNetwork.ConnectUsingSettings(VERSION);
         SpawnPoints.Add(SpawnPoint1);
         SpawnPoints.Add(SpawnPoint2);
     }
@@ -32,12 +34,18 @@ public class NetworkManager : MonoBehaviour {
     void OnJoinedRoom()
     {
 //        GameObject player =  PhotonNetwork.Instantiate(prefabName, SpawnPoints[i].position, SpawnPoints[i].rotation, group);
-        GameObject player = PhotonNetwork.Instantiate(prefabName, SpawnPoint1.position, SpawnPoint1.rotation, group);
+        player = PhotonNetwork.Instantiate(prefabName, SpawnPoint1.position, SpawnPoint1.rotation, group);
         player.tag = Globals.Tags.Player.ToString();
         player.transform.position = SpawnPoints[player.GetPhotonView().viewID/1000].position;
         player.SetActive(true);
         Debug.Log("prefab Name:" + prefabName + " number: " + player.GetPhotonView().viewID +"\nIsActive: " + player.GetActive());
         //create to spawn points 
+    }
+
+    void OnLeftRoom()
+    {
+        //PhotonNetwork.
+        Debug.Log("Player #: " + player.GetPhotonView().viewID + " has left the room");
     }
 
     //private LoadBalancingClient client;
